@@ -37,7 +37,7 @@ class Car():
 class Battery():
     """一次模拟电动汽车电瓶的简单尝试"""
 
-    def __init__(self, battery_size=60):
+    def __init__(self, battery_size=70):
         """初始化电瓶的属性"""
         self.battery_size = battery_size
 
@@ -47,6 +47,7 @@ class Battery():
 
     def get_range(self):
         """打印一条描述电瓶续航里程的消息"""
+        global range
         if self.battery_size == 70:
             range = 240
         elif self.battery_size == 85:
