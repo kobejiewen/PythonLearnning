@@ -24,7 +24,13 @@ def run_gamne():
         # 监视键盘和鼠标事件
         gf.check_events(ai_setting,screen,ship,bullets)
         ship.update()
-        bullets.update()
+        gf.update_bullets(bullets)
+        gf.update_screen(ai_setting,screen,ship,bullets)
+
+        # 删除已消失的子弹
+        for bullet in bullets:
+            if bullet.rect.bottom <= 0 :
+                bullets.remove(bullet)
 
         # 每次循环都重绘屏幕
         gf.update_screen(ai_setting,screen,ship,bullets)

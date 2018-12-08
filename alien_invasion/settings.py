@@ -11,8 +11,9 @@ class Settings():
         # 飞船的设置,移动1.5像素
         self.ship_speed_factor = 1.5
 
-        # 子弹设置
+        # 子弹设置,将未消失的子弹数限制为3颗
         self.bullet_speed_factor = 1
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = 60, 60, 60
+        self.bullets_allowed = 3
