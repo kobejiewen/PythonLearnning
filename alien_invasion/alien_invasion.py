@@ -2,6 +2,7 @@ import sys
 import pygame
 from settings import Settings
 from ship import Ship
+from alien import Alien
 import game_functions as gf
 from pygame.sprite import Group
 
@@ -16,6 +17,9 @@ def run_gamne():
     # 创建一艘飞船
     ship = Ship(ai_setting,screen)
 
+    # 创建一个外星人
+    alien = Alien(ai_setting,screen)
+
     # 创建一个用于存储子弹的编组
     bullets = Group()
 
@@ -25,7 +29,7 @@ def run_gamne():
         gf.check_events(ai_setting,screen,ship,bullets)
         ship.update()
         gf.update_bullets(bullets)
-        gf.update_screen(ai_setting,screen,ship,bullets)
+        gf.update_screen(ai_setting,screen,ship,alien,bullets)
 
         # 删除已消失的子弹
         for bullet in bullets:
@@ -33,7 +37,7 @@ def run_gamne():
                 bullets.remove(bullet)
 
         # 每次循环都重绘屏幕
-        gf.update_screen(ai_setting,screen,ship,bullets)
+        gf.update_screen(ai_setting,screen,ship,alien,bullets)
 
 
 run_gamne()
