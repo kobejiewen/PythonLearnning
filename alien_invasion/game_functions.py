@@ -88,17 +88,21 @@ def create_fleet(ai_settings, screen,ship, aliens):
         for alien_number in range(number_aliens_x):
             create_alien(ai_settings,screen,aliens,alien_number,row_number)
 
-def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
+def check_bullet_alien_collisions(ai_settings, screen,stats,sb, ship, aliens, bullets):
     """响应子弹和外星人的碰撞"""
     # 删除发生碰撞的子弹和外星人
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    if collisions:
+        stats.score += ai_settings.alien_points
+        sb.prep_score()
+
     if len(aliens) == 0:
         # 删除现有的所有子弹，并创建一个新的外星人群
         bullets.empty()
         ai_settings.increase_speed()
         create_fleet(ai_settings, screen, ship,aliens)
 
-def update_bullets(ai_settings,screen,ship,aliens,bullets):
+def update_bullets(ai_settings,screen,stats,sb,ship,aliens,bullets):
     """更新子弹的位置，并删除已消失的子弹"""
     # 更新子弹的位置
     bullets.update()
@@ -106,7 +110,7 @@ def update_bullets(ai_settings,screen,ship,aliens,bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-    check_bullet_alien_collisions(ai_settings,screen,ship,aliens,bullets)
+    check_bullet_alien_collisions(ai_settings,screen,stats,sb,ship,aliens,bullets)
 
 def fire_bullet(ai_settings, screen, ship, bullets):
     """如果还没有到达限制，就发射一颗子弹"""
