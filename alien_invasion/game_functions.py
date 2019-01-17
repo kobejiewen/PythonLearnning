@@ -50,6 +50,7 @@ def check_play_button(ai_settings,screen,stats,sb, play_button,ship,aliens,bulle
         sb.prep_score()
         sb.prep_high_score()
         sb.prep_level()
+        sb.prep_ships()
         stats.game_active = True
         # 清空外星人列表和子弹列表
         aliens.empty()
@@ -162,11 +163,13 @@ def check_fleet_edges(ai_settings, aliens):
             change_fleet_direction(ai_settings, aliens)
             break
 
-def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+def ship_hit(ai_settings, stats, screen,sb, ship, aliens, bullets):
     """响应被外星人撞到的飞船"""
     if stats.ships_left > 0:
         # 将ships_left减1
         stats.ships_left -= 1
+        # 更新记分牌
+        sb.prep_ships()
         # 清空外星人列表和子弹列表
         aliens.empty()
         bullets.empty()
@@ -179,26 +182,26 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         stats.game_active = False
         pygame.mouse.set_visible(True)
 
-def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+def check_aliens_bottom(ai_settings, screen,stats,sb,ship, aliens, bullets):
     """检查是否有外星人到达了屏幕底端"""
     screen_rect = screen.get_rect()
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
             # 像飞船被撞到一样进行处理
-            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+            ship_hit(ai_settings, stats, screen,sb, ship, aliens, bullets)
             break
 
-def update_aliens(ai_settings,stats,screen,ship,aliens,bullets):
+def update_aliens(ai_settings,screen,stats,sb,ship,aliens,bullets):
     """检查是否有外星人到达屏幕边缘,然后更新所有外星人的位置"""
     check_fleet_edges(ai_settings,aliens)
     aliens.update()
 
     # 检测外星人和飞船之间的碰撞
     if pygame.sprite.spritecollideany(ship, aliens):
-        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+        ship_hit(ai_settings, stats, screen,sb,ship, aliens, bullets)
 
     # 检查是否有外星人到达屏幕底端
-    check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
+    check_aliens_bottom(ai_settings, screen,stats,sb, ship, aliens, bullets)
 
 def check_high_score(stats, sb):
     """检查是否诞生了新的最高得分"""
